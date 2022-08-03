@@ -1,0 +1,16 @@
+include: package:flutter_lints/flutter.yaml
+
+analyzer:
+  errors:
+    invalid_override_of_non_virtual_member: error
+    invalid_use_of_protected_member: error
+    invalid_use_of_internal_member: error
+
+linter:
+  rules:
+    avoid_print: true
+    prefer_single_quotes: true
+    always_use_package_imports: true
+    camel_case_types: true
+    avoid_web_libraries_in_flutter: false
+    avoid_relative_lib_imports: false
