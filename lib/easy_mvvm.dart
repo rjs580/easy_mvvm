@@ -15,3 +15,4 @@ export 'src/view_model.dart' show ViewModel;
 export 'src/view.dart' show View;
 export 'src/locator.dart' show locator;
 export 'src/base_view.dart' hide BaseView;
+export 'src/view.dart' hide ViewElement;

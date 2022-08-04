@@ -12,7 +12,7 @@ class CounterView extends View<CounterViewModel> {
   Duration get routeTransitionDuration => const Duration(milliseconds: 500);
 
   @override
-  Widget buildView(BuildContext context, ThemeData theme, CounterViewModel viewModel, Widget? child) {
+  Widget build(BuildContext context, ThemeData theme, CounterViewModel viewModel, Widget? child) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Counter View'),

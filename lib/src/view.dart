@@ -3,40 +3,10 @@ import 'package:easy_mvvm/src/locator.dart';
 import 'package:easy_mvvm/src/route_info.dart';
 import 'package:easy_mvvm/src/view_model.dart';
 import 'package:flutter/material.dart';
-import 'package:meta/meta.dart';
-
-// abstract class TestView<T extends ViewModel> extends Widget with RouteInfo {
-//   const TestView({Key? key}) : super(key: key);
-//
-//   @protected
-//   Widget build(BuildContext context, T viewModel);
-//
-//   @required
-//   @protected
-//   T viewModelFactory();
-// }
-//
-// class _TestViewElement<T extends ViewModel> extends ComponentElement {
-//   _TestViewElement(TestView widget) : super(widget);
-//
-//   @override
-//   TestView get widget => super.widget as TestView<T>;
-//
-//   @override
-//   Widget build() =>
-//       widget.build(this, widget.viewModelFactory());
-//
-//   @override
-//   void update(TestView newWidget) {
-//     super.update(newWidget);
-//     assert(widget == newWidget);
-//     rebuild();
-//   }
-// }
 
 /// Abstract class that simplifies the use of complicated mvvm
 /// architecture.
-abstract class View<T extends ViewModel> extends StatelessWidget with RouteInfo {
+abstract class View<T extends ViewModel> extends Widget with RouteInfo {
   const View({
     Key? key
   }) : super(key: key);
@@ -44,7 +14,7 @@ abstract class View<T extends ViewModel> extends StatelessWidget with RouteInfo 
   /// Called when this view needs to be built.
   @required
   @protected
-  Widget buildView(BuildContext context, ThemeData theme, T viewModel, Widget? child);
+  Widget build(BuildContext context, ThemeData theme, T viewModel, Widget? child);
 
   /// It is used to register the [ViewModel] if not already registered to the [locator].
   @required
@@ -92,18 +62,35 @@ abstract class View<T extends ViewModel> extends StatelessWidget with RouteInfo 
   void dispose(T viewModel) {}
 
   @override
-  @nonVirtual
-  Widget build(BuildContext context) {
-    final ThemeData theme = Theme.of(context);
+  ViewElement<T> createElement() => ViewElement<T>(this);
+}
+
+/// An element that builds up other elements like widgets or views
+class ViewElement<T extends ViewModel> extends ComponentElement {
+  ViewElement(View widget) : super(widget);
+
+  @override
+  View<T> get widget => super.widget as View<T>;
+
+  @override
+  Widget build() {
+    final ThemeData theme = Theme.of(this);
 
     return WillPopScope(
-      onWillPop: () => onWillPop(context),
+      onWillPop: () => widget.onWillPop(this),
       child: BaseView<T>(
-        viewModelFactory: viewModelFactory,
-        onInit: init,
-        onDispose: dispose,
-        builder: (context, viewModel, child) => buildView(context, theme, viewModel, child),
+        viewModelFactory: widget.viewModelFactory,
+        onInit: widget.init,
+        onDispose: widget.dispose,
+        builder: (context, viewModel, child) => widget.build(context, theme, viewModel, child),
       ),
     );
+  }
+
+  @override
+  void update(View newWidget) {
+    super.update(newWidget);
+    assert(widget == newWidget);
+    rebuild();
   }
 }

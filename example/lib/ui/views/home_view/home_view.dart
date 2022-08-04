@@ -8,7 +8,7 @@ class HomeView extends View<HomeViewModel> {
   final String title;
 
   @override
-  Widget buildView(BuildContext context, ThemeData theme, HomeViewModel viewModel, Widget? child) {
+  Widget build(BuildContext context, ThemeData theme, HomeViewModel viewModel, Widget? child) {
     return Scaffold(
       appBar: AppBar(
         title: Text(title),
