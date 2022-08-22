@@ -231,19 +231,19 @@ class RouteService {
     }
 
     if (routeName != null && routeName == '/') {
-      RouteInfo? _homeView = homeView;
-      if (_homeView != null) {
-        if (_homeView.routeTransition == RouteTransition.appDefault) {
+      RouteInfo? homeViewInfo = homeView;
+      if (homeViewInfo != null) {
+        if (homeViewInfo.routeTransition == RouteTransition.appDefault) {
           return MaterialPageRoute(
             settings: settings,
-            builder: (_) => _homeView,
+            builder: (_) => homeViewInfo,
           );
         } else {
           return CustomPageRouteBuilder(
-            routerTransition: _homeView.routeTransition,
-            transitionDuration: _homeView.routeTransitionDuration,
+            routerTransition: homeViewInfo.routeTransition,
+            transitionDuration: homeViewInfo.routeTransitionDuration,
             settings: settings,
-            child: _homeView,
+            child: homeViewInfo,
           );
         }
       }

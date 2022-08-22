@@ -3,6 +3,7 @@ import 'package:easy_mvvm/src/locator.dart';
 import 'package:easy_mvvm/src/route_info.dart';
 import 'package:easy_mvvm/src/view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:meta/meta.dart';
 
 /// Abstract class that simplifies the use of complicated mvvm
 /// architecture.
@@ -66,6 +67,7 @@ abstract class View<T extends ViewModel> extends Widget with RouteInfo {
 }
 
 /// An element that builds up other elements like widgets or views
+@internal
 class ViewElement<T extends ViewModel> extends ComponentElement {
   ViewElement(View widget) : super(widget);
 

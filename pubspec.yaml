@@ -1,9 +1,10 @@
 name: easy_mvvm
-description: Easiest way to use MVVM in your flutter application
-version: 0.0.1
+description: An easy mvvm solution that includes ways to manage routes, views, viewmodels, and the mvvm architecture
+version: 0.0.2
 homepage: https://github.com/rjs580/easy_mvvm
 repository: https://github.com/rjs580/easy_mvvm
 issue_tracker: https://github.com/rjs580/easy_mvvm/issues
+documentation: https://pub.dev/documentation/easy_mvvm/latest/
 
 platforms:
   android:
@@ -26,6 +27,9 @@ dependencies:
   get_it: ^7.2.0
   args: ^2.3.1
   pubspec_yaml: ^3.1.0
+  colorize: any
+  code_builder: ^4.2.0
+  dart_style: ^2.2.3
 
 dev_dependencies:
   flutter_lints: ^2.0.1

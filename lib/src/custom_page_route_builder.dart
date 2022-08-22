@@ -36,32 +36,32 @@ class CustomPageRouteBuilder extends PageRouteBuilder {
           return FadeThroughTransition(
             animation: animation,
             secondaryAnimation: secondaryAnimation,
-            child: child,
             fillColor: backgroundColor,
+            child: child,
           );
         case RouteTransition.scaledSharedAxis:
           return SharedAxisTransition(
             animation: animation,
             secondaryAnimation: secondaryAnimation,
-            child: child,
             transitionType: SharedAxisTransitionType.scaled,
             fillColor: backgroundColor,
+            child: child,
           );
         case RouteTransition.verticalSharedAxis:
           return SharedAxisTransition(
             animation: animation,
             secondaryAnimation: secondaryAnimation,
-            child: child,
             transitionType: SharedAxisTransitionType.vertical,
             fillColor: backgroundColor,
+            child: child,
           );
         case RouteTransition.horizontalSharedAxis:
           return SharedAxisTransition(
             animation: animation,
             secondaryAnimation: secondaryAnimation,
-            child: child,
             transitionType: SharedAxisTransitionType.horizontal,
             fillColor: backgroundColor,
+            child: child,
           );
       }
 

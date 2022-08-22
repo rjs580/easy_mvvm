@@ -1,5 +1,5 @@
-/// An easy total mvvm solution that includes ways to manage routes,
-/// drawer, and the mvvm architecture
+/// An easy mvvm solution that includes ways to manage routes, views, viewmodels,
+/// and the mvvm architecture
 library easy_mvvm;
 
 // router

@@ -21,7 +21,7 @@ class RouteErrorTemplate extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final ThemeData _theme = Theme.of(context);
+    final ThemeData theme = Theme.of(context);
 
     return Scaffold(
       body: Center(
@@ -29,12 +29,12 @@ class RouteErrorTemplate extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(errorDescription, style: _theme.textTheme.headlineMedium, softWrap: true, textAlign: TextAlign.center),
+            Text(errorDescription, style: theme.textTheme.headlineMedium, softWrap: true, textAlign: TextAlign.center),
             const SizedBox(height: 32),
             if (actionText != null)
               ElevatedButton(
-                child: Text(actionText!, style: _theme.textTheme.labelLarge, softWrap: true),
                 onPressed: onAction,
+                child: Text(actionText!, style: theme.textTheme.labelLarge, softWrap: true),
               ),
           ],
         ),

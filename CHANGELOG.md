@@ -1,3 +1,7 @@
+## 0.0.2
+
+* Commands to create services, views, and init mvvm project
+
 ## 0.0.1+1
 
 * Replaced View.buildView to View.build for readability of code
