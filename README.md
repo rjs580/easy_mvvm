@@ -19,9 +19,9 @@ dependencies:
 
 | Options | Short | Description                                                                   | Usage                                        |
 |---------|-------|-------------------------------------------------------------------------------|----------------------------------------------|
-| create  |       | Quickly creates views, and services                                           | `flutter pub run easy_mvvm init`             |
-| init    |       | Initialize an mvvm project (creates the folder structure and necessary files) | `flutter pub run easy_mvvm create <options>` |
-| --help  | -h    | Print Usage Information                                                       | `flutter pub run easy_mvvm <options> -h`     |
+| create  |       | Quickly creates views, and services                                           | `flutter pub run easy_mvvm create <options>`             |
+| init    |       | Initialize an mvvm project (creates the folder structure and necessary files) | `flutter pub run easy_mvvm init` |
+| --help  | -h    | Print Usage Information                                                       | `flutter pub run easy_mvvm -h`     |
 
 ### Command line options and arguments for `create`
 | Options | Short | Description                         | Usage                                                |
@@ -43,5 +43,5 @@ dependencies:
 
 | Arguments                   | Short | Description                                                        | Usage                                                               |
 |-----------------------------|-------|--------------------------------------------------------------------|---------------------------------------------------------------------|
-| --path=<path_name>          | -p    | Use if path name (route) for web is not the same as the class name | `flutter pub run easy_mvvm create view <ClassName> --path=routePath |
+| --path=<path_name>          | -p    | Use if path name (route) for web is not the same as the class name | `flutter pub run easy_mvvm create view <ClassName> --path=routePath` |
 | --help                      | -h    | Print Usage Information                                            | `flutter pub run easy_mvvm <options> -h`                            |
