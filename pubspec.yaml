@@ -1,6 +1,6 @@
 name: easy_mvvm
 description: An easy mvvm solution that includes ways to manage routes, views, viewmodels, and the mvvm architecture
-version: 0.0.3
+version: 0.0.3-1
 homepage: https://github.com/rjs580/easy_mvvm
 repository: https://github.com/rjs580/easy_mvvm
 issue_tracker: https://github.com/rjs580/easy_mvvm/issues
