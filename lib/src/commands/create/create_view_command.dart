@@ -11,7 +11,7 @@ import 'package:recase/recase.dart';
 class CreateViewCommand extends Command {
   CreateViewCommand({required this.packageName}) {
     argParser
-      .addOption('path', abbr: 'p', valueHelp: 'path_name', help: 'Use if path name is not the same as the class name');
+      .addOption('path', abbr: 'p', valueHelp: 'path_name', help: 'Use if path name (route) for web is not the same as the class name');
   }
 
   @override

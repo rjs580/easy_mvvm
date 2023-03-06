@@ -242,6 +242,7 @@ class RouteService {
           return CustomPageRouteBuilder(
             routerTransition: homeViewInfo.routeTransition,
             transitionDuration: homeViewInfo.routeTransitionDuration,
+            backgroundColor: homeViewInfo.routeTransitionBackgroundColor,
             settings: settings,
             child: homeViewInfo,
           );
@@ -277,6 +278,7 @@ class RouteService {
               return CustomPageRouteBuilder(
                 routerTransition: routeInstance.routeTransition,
                 transitionDuration: routeInstance.routeTransitionDuration,
+                backgroundColor: routeInstance.routeTransitionBackgroundColor,
                 settings: settings,
                 child: routeInstance,
               );
@@ -300,6 +302,7 @@ class RouteService {
           return CustomPageRouteBuilder(
             routerTransition: routeInstance.routeTransition,
             transitionDuration: routeInstance.routeTransitionDuration,
+            backgroundColor: routeInstance.routeTransitionBackgroundColor,
             settings: settings,
             child: routeInstance,
           );

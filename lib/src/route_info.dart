@@ -12,4 +12,9 @@ mixin RouteInfo on Widget {
 
   /// Transition duration for the route
   Duration get routeTransitionDuration => const Duration(milliseconds: 320);
+
+  /// The color to use for the background color during the transition.
+  ///
+  /// This defaults to the [Theme]'s [ThemeData.canvasColor].
+  Color? get routeTransitionBackgroundColor => null;
 }
