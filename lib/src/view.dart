@@ -4,13 +4,12 @@ import 'package:easy_mvvm/src/route_info.dart';
 import 'package:easy_mvvm/src/view_model.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 /// Abstract class that simplifies the use of complicated mvvm
 /// architecture.
 abstract class View<T extends ViewModel> extends Widget with RouteInfo {
-  const View({
-    Key? key
-  }) : super(key: key);
+  const View({Key? key}) : super(key: key);
 
   /// Called when this view needs to be built.
   @required
@@ -21,6 +20,11 @@ abstract class View<T extends ViewModel> extends Widget with RouteInfo {
   @required
   @protected
   T viewModelFactory();
+
+  /// Use this for optimizing expensive widgets that will or
+  /// do not need to be rebuilt every time the model changes.
+  @protected
+  Widget? child(BuildContext context, ThemeData theme) => null;
 
   /// Called to veto attempts by the user to dismiss the enclosing [ModalRoute].
   ///
@@ -78,12 +82,23 @@ class ViewElement<T extends ViewModel> extends ComponentElement {
   Widget build() {
     final ThemeData theme = Theme.of(this);
 
+    if (UniversalPlatform.isIOS) {
+      return BaseView<T>(
+        viewModelFactory: widget.viewModelFactory,
+        onInit: widget.init,
+        onDispose: widget.dispose,
+        child: widget.child?.call(this, theme),
+        builder: (context, viewModel, child) => widget.build(context, theme, viewModel, child),
+      );
+    }
+
     return WillPopScope(
       onWillPop: () => widget.onWillPop(this),
       child: BaseView<T>(
         viewModelFactory: widget.viewModelFactory,
         onInit: widget.init,
         onDispose: widget.dispose,
+        child: widget.child?.call(this, theme),
         builder: (context, viewModel, child) => widget.build(context, theme, viewModel, child),
       ),
     );

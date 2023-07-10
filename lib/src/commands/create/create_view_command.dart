@@ -10,8 +10,7 @@ import 'package:recase/recase.dart';
 @internal
 class CreateViewCommand extends Command {
   CreateViewCommand({required this.packageName}) {
-    argParser
-      .addOption('path', abbr: 'p', valueHelp: 'path_name', help: 'Use if path name (route) for web is not the same as the class name');
+    argParser.addOption('path', abbr: 'p', valueHelp: 'path_name', help: 'Use if path name (route) for web is not the same as the class name');
   }
 
   @override
@@ -29,7 +28,7 @@ class CreateViewCommand extends Command {
   void run() {
     if (argResults?.rest.isNotEmpty ?? false) {
       final String className = argResults?.rest[0].trim() ?? '';
-      final String classModelName = className.contains('View') ? '${className}Model': '${className}ViewModel';
+      final String classModelName = className.contains('View') ? '${className}Model' : '${className}ViewModel';
       final String pathName = (argResults?.wasParsed('path') ?? false) ? (argResults?['path']) : (className.replaceAll('View', '').snakeCase);
       final String viewFileName = className.snakeCase;
       final String viewModelFileName = classModelName.snakeCase;
@@ -54,14 +53,10 @@ class CreateViewCommand extends Command {
         } else {
           final viewContentCode = Library((b) {
             b.name = className;
-            b.directives.addAll([
-              Directive.import('package:easy_mvvm/easy_mvvm.dart'),
-              Directive.import('package:flutter/material.dart'),
-              Directive.import('package:$packageName/ui/views/$viewFileName/$viewModelFileName.dart')
-            ]);
+            b.directives.addAll([Directive.import('package:easy_mvvm/easy_mvvm.dart', as: 'mvvm'), Directive.import('package:flutter/material.dart'), Directive.import('package:$packageName/ui/views/$viewFileName/$viewModelFileName.dart')]);
             b.body.add(Class((c) {
               c.name = className;
-              c.extend = refer('View<$classModelName>');
+              c.extend = refer('mvvm.View<$classModelName>');
               c.constructors.addAll([
                 Constructor((d) {
                   d.optionalParameters.addAll([
@@ -118,9 +113,9 @@ class CreateViewCommand extends Command {
           });
 
           final DartEmitter emitter = DartEmitter.scoped(useNullSafetySyntax: true);
-          String viewFileContents = DartFormatter(pageWidth: 999).format('${viewContentCode.accept(emitter)}');
+          String viewFileContents = DartFormatter().format('${viewContentCode.accept(emitter)}');
           // remove first line with the library import
-          viewFileContents = DartFormatter(pageWidth: 999).format(viewFileContents.substring(viewFileContents.indexOf('\n')+1));
+          viewFileContents = DartFormatter().format(viewFileContents.substring(viewFileContents.indexOf('\n') + 1));
 
           // create the view file
           viewFile.createSync(recursive: true);
@@ -137,9 +132,9 @@ class CreateViewCommand extends Command {
             }));
           });
 
-          String viewModelFileContents = DartFormatter(pageWidth: 999).format('${viewModelContentCode.accept(emitter)}');
+          String viewModelFileContents = DartFormatter().format('${viewModelContentCode.accept(emitter)}');
           // remove first line with the library import
-          viewModelFileContents = DartFormatter(pageWidth: 999).format(viewModelFileContents.substring(viewModelFileContents.indexOf('\n')+1));
+          viewModelFileContents = DartFormatter().format(viewModelFileContents.substring(viewModelFileContents.indexOf('\n') + 1));
 
           // create the view model file
           viewModelFile.createSync(recursive: true);
@@ -154,13 +149,12 @@ class CreateViewCommand extends Command {
             routesFileLines.insert(classEndIndex, 'router.defineRoute<$className>(instance: () => const $className(), path: \'$pathName\', className: \'$className\');');
 
             final String routesFileAsStringOut = routesFileLines.join('\n');
-            final String routesFileContents = DartFormatter(pageWidth: 999).format(routesFileAsStringOut);
+            final String routesFileContents = DartFormatter().format(routesFileAsStringOut);
             routeFile.writeAsStringSync(routesFileContents, mode: FileMode.write);
           }
         }
       } else {
-        final Colorize fileDoesNotExist = Colorize('lib/app/routes.dart file does not exist')
-          ..red();
+        final Colorize fileDoesNotExist = Colorize('lib/app/routes.dart file does not exist')..red();
         stdout.writeln(fileDoesNotExist);
       }
     } else {

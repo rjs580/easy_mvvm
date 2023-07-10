@@ -5,9 +5,11 @@ import 'package:easy_mvvm/src/defined_routes.dart';
 import 'package:easy_mvvm/src/route_error_template.dart';
 import 'package:easy_mvvm/src/route_info.dart';
 import 'package:easy_mvvm/src/route_transition.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:recase/recase.dart';
+import 'package:universal_platform/universal_platform.dart';
 
 /// Service to navigate through routes within the app
 ///
@@ -193,8 +195,7 @@ class RouteService {
       if (uri.pathSegments.isEmpty) {
         return _pathRoutes['/']?.className ?? kUnknownClass;
       } else {
-        return uri.pathSegments
-            .map((e) => _pathRoutes[e]?.className ?? kUnknownClass).join('/');
+        return uri.pathSegments.map((e) => _pathRoutes[e]?.className ?? kUnknownClass).join('/');
       }
     }
 
@@ -208,8 +209,7 @@ class RouteService {
       if (uri.pathSegments.isEmpty) {
         return _pathRoutes['/']?.title ?? kUnknownTitle;
       } else {
-        return uri.pathSegments
-            .map((e) => _pathRoutes[e]?.title ?? kUnknownTitle).join('/');
+        return uri.pathSegments.map((e) => _pathRoutes[e]?.title ?? kUnknownTitle).join('/');
       }
     }
 
@@ -234,10 +234,15 @@ class RouteService {
       RouteInfo? homeViewInfo = homeView;
       if (homeViewInfo != null) {
         if (homeViewInfo.routeTransition == RouteTransition.appDefault) {
-          return MaterialPageRoute(
-            settings: settings,
-            builder: (_) => homeViewInfo,
-          );
+          return UniversalPlatform.isIOS
+              ? CupertinoPageRoute(
+                  settings: settings,
+                  builder: (_) => homeViewInfo,
+                )
+              : MaterialPageRoute(
+                  settings: settings,
+                  builder: (_) => homeViewInfo,
+                );
         } else {
           return CustomPageRouteBuilder(
             routerTransition: homeViewInfo.routeTransition,
@@ -270,10 +275,15 @@ class RouteService {
         if (routeInstance.isProtectedRoute) {
           if ((isAuthenticated?.call() ?? true)) {
             if (routeInstance.routeTransition == RouteTransition.appDefault) {
-              return MaterialPageRoute(
-                settings: settings,
-                builder: (_) => routeInstance,
-              );
+              return UniversalPlatform.isIOS
+                  ? CupertinoPageRoute(
+                      settings: settings,
+                      builder: (_) => routeInstance,
+                    )
+                  : MaterialPageRoute(
+                      settings: settings,
+                      builder: (_) => routeInstance,
+                    );
             } else {
               return CustomPageRouteBuilder(
                 routerTransition: routeInstance.routeTransition,
@@ -286,18 +296,25 @@ class RouteService {
           } else {
             return MaterialPageRoute(
               settings: settings,
-              builder: (_) => unauthorizedView ?? RouteErrorTemplate(
-                errorDescription: 'The requested route $routeName is a protected route and therefore requires users to be authenticated before accessing.',
-              ),
+              builder: (_) =>
+                  unauthorizedView ??
+                  RouteErrorTemplate(
+                    errorDescription: 'The requested route $routeName is a protected route and therefore requires users to be authenticated before accessing.',
+                  ),
             );
           }
         }
 
         if (routeInstance.routeTransition == RouteTransition.appDefault) {
-          return MaterialPageRoute(
-            settings: settings,
-            builder: (_) => routeInstance,
-          );
+          return UniversalPlatform.isIOS
+              ? CupertinoPageRoute(
+                  settings: settings,
+                  builder: (_) => routeInstance,
+                )
+              : MaterialPageRoute(
+                  settings: settings,
+                  builder: (_) => routeInstance,
+                );
         } else {
           return CustomPageRouteBuilder(
             routerTransition: routeInstance.routeTransition,
@@ -312,9 +329,11 @@ class RouteService {
 
     return MaterialPageRoute(
       settings: settings,
-      builder: (_) => routeNotFoundView ?? RouteErrorTemplate(
-        errorDescription: 'The requested route $routeName was not found.',
-      ),
+      builder: (_) =>
+          routeNotFoundView ??
+          RouteErrorTemplate(
+            errorDescription: 'The requested route $routeName was not found.',
+          ),
     );
   }
 }

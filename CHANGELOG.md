@@ -1,3 +1,15 @@
+## 0.0.6
+
+* Change the page width for dart formatter when creating new views
+
+## 0.0.5
+
+* Updated creating a view with `as mvvm` to make sure the class `View` doesn't collide with the flutter class
+
+## 0.0.4
+
+* App default transition for iOS devices
+
 ## 0.0.3-1
 
 * Updated README

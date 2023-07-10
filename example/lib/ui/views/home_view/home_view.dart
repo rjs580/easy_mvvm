@@ -1,8 +1,8 @@
-import 'package:easy_mvvm/easy_mvvm.dart';
+import 'package:easy_mvvm/easy_mvvm.dart' as mvvm;
 import 'package:example/ui/views/home_view/home_view_model.dart';
 import 'package:flutter/material.dart';
 
-class HomeView extends View<HomeViewModel> {
+class HomeView extends mvvm.View<HomeViewModel> {
   const HomeView({Key? key, required this.title}) : super(key: key);
 
   final String title;

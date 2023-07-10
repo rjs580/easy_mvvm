@@ -1,4 +1,3 @@
-import 'package:easy_mvvm/src/view.dart';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
@@ -22,8 +21,7 @@ class ViewModel extends ChangeNotifier {
   }
 
   /// Called when the model is ready/initialized.
-  void init(BuildContext? context) {
-  }
+  void init(BuildContext? context) {}
 
   /// Update the view associated with this view model
   @nonVirtual
