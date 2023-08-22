@@ -15,6 +15,10 @@ dependencies:
 
 2) Run the `init` command in terminal `flutter pub run easy_mvvm init`
 
+### Web Recommendation
+
+Use [url_strategy](https://pub.dev/packages/url_strategy) to remove the '#' in the URL
+
 ### Command line options and arguments
 
 | Options | Short | Description                                                                   | Usage                                        |

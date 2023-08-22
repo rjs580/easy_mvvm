@@ -1,3 +1,9 @@
+## 0.0.7
+
+* Fixed compatibility with the [url_strategy](https://pub.dev/packages/url_strategy) package
+* Updated creating a view model with `as mvvm` to make sure the class `View` within this package doesn't collide with the flutter class
+* Updated dependencies
+
 ## 0.0.6
 
 * Change the page width for dart formatter when creating new views

@@ -179,6 +179,9 @@ class RouteService {
     String? title,
     String? Function()? dependencies,
   }) {
+    // This is to resolve warnings on the web when navigating without '/' in the route
+    if (kIsWeb) path = (path.isNotEmpty && path[0] != '/') ? '/$path' : path;
+
     _pathRoutes[path] = _classRoutes[_routeKey<T>()] = DefinedRoutes(
       path: path,
       instanceCreator: instance,
@@ -193,9 +196,12 @@ class RouteService {
     if (kIsWeb) {
       final Uri uri = Uri.parse(path);
       if (uri.pathSegments.isEmpty) {
-        return _pathRoutes['/']?.className ?? kUnknownClass;
+        return _pathRoutes['']?.className ?? _pathRoutes['/']?.className ?? kUnknownClass;
       } else {
-        return uri.pathSegments.map((e) => _pathRoutes[e]?.className ?? kUnknownClass).join('/');
+        return uri.pathSegments.map((String e) {
+          e = (e.isNotEmpty && e[0] != '/') ? '/$e' : e;
+          return _pathRoutes[e]?.className ?? kUnknownClass;
+        }).join('/');
       }
     }
 
@@ -209,7 +215,10 @@ class RouteService {
       if (uri.pathSegments.isEmpty) {
         return _pathRoutes['/']?.title ?? kUnknownTitle;
       } else {
-        return uri.pathSegments.map((e) => _pathRoutes[e]?.title ?? kUnknownTitle).join('/');
+        return uri.pathSegments.map((e) {
+          e = (e.isNotEmpty && e[0] != '/') ? '/$e' : e;
+          return _pathRoutes[e]?.title ?? kUnknownTitle;
+        }).join('/');
       }
     }
 
@@ -227,6 +236,12 @@ class RouteService {
         routeName = '/';
       } else {
         routeName = uri.pathSegments.join('/');
+
+        // this adds the '/' in the front of the routes to match the change that was made to the
+        // path in [defineRoute] function
+        if (routeName.isNotEmpty && routeName[0] != '/') {
+          routeName = '/$routeName';
+        }
       }
     }
 

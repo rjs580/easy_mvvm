@@ -53,7 +53,11 @@ class CreateViewCommand extends Command {
         } else {
           final viewContentCode = Library((b) {
             b.name = className;
-            b.directives.addAll([Directive.import('package:easy_mvvm/easy_mvvm.dart', as: 'mvvm'), Directive.import('package:flutter/material.dart'), Directive.import('package:$packageName/ui/views/$viewFileName/$viewModelFileName.dart')]);
+            b.directives.addAll([
+              Directive.import('package:easy_mvvm/easy_mvvm.dart', as: 'mvvm'),
+              Directive.import('package:flutter/material.dart'),
+              Directive.import('package:$packageName/ui/views/$viewFileName/$viewModelFileName.dart'),
+            ]);
             b.body.add(Class((c) {
               c.name = className;
               c.extend = refer('mvvm.View<$classModelName>');
@@ -124,11 +128,11 @@ class CreateViewCommand extends Command {
           final viewModelContentCode = Library((b) {
             b.name = classModelName;
             b.directives.addAll([
-              Directive.import('package:easy_mvvm/easy_mvvm.dart'),
+              Directive.import('package:easy_mvvm/easy_mvvm.dart', as: 'mvvm'),
             ]);
             b.body.add(Class((c) {
               c.name = classModelName;
-              c.extend = refer('ViewModel');
+              c.extend = refer('mvvm.ViewModel');
             }));
           });
 
