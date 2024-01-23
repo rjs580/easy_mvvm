@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 
-/// ViewModel is the middleman for your model and the [View]. Any
-/// inputs from your [View] will be forwarded to the [ViewModel] and
+@Deprecated('Use [EasyViewModel]')
+typedef ViewModel = EasyViewModel;
+
+/// ViewModel is the middleman for your model and the [EasyView]. Any
+/// inputs from your [EasyView] will be forwarded to the [EasyViewModel] and
 /// then it will update or change the model. Other way is when the model
-/// updates, the state of the [ViewModel] changes and the [View] will
+/// updates, the state of the [EasyViewModel] changes and the [EasyView] will
 /// automatically be asked to update.
-class ViewModel extends ChangeNotifier {
+class EasyViewModel extends ChangeNotifier {
   /// Busy status for the view model
   bool _busy = false;
 

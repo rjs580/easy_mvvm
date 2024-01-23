@@ -11,8 +11,8 @@ export 'src/custom_page_route_builder.dart' hide CustomPageRouteBuilder;
 export 'src/defined_routes.dart' hide DefinedRoutes;
 
 // mvvm
-export 'src/view_model.dart' show ViewModel;
-export 'src/view.dart' show View;
+export 'src/easy_view_model.dart' show EasyViewModel, ViewModel;
+export 'src/easy_view.dart' show EasyView, View;
 export 'src/locator.dart' show locator;
 export 'src/base_view.dart' hide BaseView;
-export 'src/view.dart' hide ViewElement;
+export 'src/easy_view.dart' hide ViewElement;

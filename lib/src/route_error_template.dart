@@ -29,12 +29,21 @@ class RouteErrorTemplate extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Text(errorDescription, style: theme.textTheme.headlineMedium, softWrap: true, textAlign: TextAlign.center),
+            Text(
+              errorDescription,
+              style: theme.textTheme.headlineMedium,
+              softWrap: true,
+              textAlign: TextAlign.center,
+            ),
             const SizedBox(height: 32),
             if (actionText != null)
               ElevatedButton(
                 onPressed: onAction,
-                child: Text(actionText!, style: theme.textTheme.labelLarge, softWrap: true),
+                child: Text(
+                  actionText!,
+                  style: theme.textTheme.labelLarge,
+                  softWrap: true,
+                ),
               ),
           ],
         ),

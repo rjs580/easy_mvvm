@@ -16,7 +16,8 @@ class InitCommand extends Command {
   String get name => 'init';
 
   @override
-  String get description => 'Initialize an mvvm project (creates the folder structure and necessary files)';
+  String get description =>
+      'Initialize an mvvm project (creates the folder structure and necessary files)';
 
   @override
   void run() {
@@ -36,26 +37,29 @@ class InitCommand extends Command {
     if (mainFile.existsSync()) {
       final List<String> mainFileContents = mainFile.readAsLinesSync();
 
-      final int importMaterialIndex = mainFileContents.indexWhere((ln) => ln.contains('import \'package:flutter/material.dart\';'));
-      final int easyMvvmIndex = mainFileContents.indexWhere((ln) => ln.contains('import \'package:easy_mvvm/easy_mvvm.dart\';'));
+      final int importMaterialIndex = mainFileContents.indexWhere(
+          (ln) => ln.contains('import \'package:flutter/material.dart\';'));
+      final int easyMvvmIndex = mainFileContents.indexWhere(
+          (ln) => ln.contains('import \'package:easy_mvvm/easy_mvvm.dart\';'));
       if (importMaterialIndex != -1 && easyMvvmIndex == -1) {
-        String mainImportsAdd =
-            'import \'package:easy_mvvm/easy_mvvm.dart\';\n'
+        String mainImportsAdd = 'import \'package:easy_mvvm/easy_mvvm.dart\';\n'
             'import \'package:$packageName/app/locator.dart\';\n'
             'import \'package:$packageName/app/routes.dart\';';
         mainFileContents.insert(importMaterialIndex, mainImportsAdd);
       } else {
         if (easyMvvmIndex != -1) {
         } else {
-          throw Exception('import of material library was not found in main.dart');
+          throw Exception(
+              'import of material library was not found in main.dart');
         }
       }
 
-      final int mainFuncIndex = mainFileContents.indexWhere((ln) => ln.contains('void main'));
-      final int setupLocatorIndex = mainFileContents.indexWhere((ln) => ln.contains('setupLocator'));
+      final int mainFuncIndex =
+          mainFileContents.indexWhere((ln) => ln.contains('void main'));
+      final int setupLocatorIndex =
+          mainFileContents.indexWhere((ln) => ln.contains('setupLocator'));
       if (mainFuncIndex != -1 && setupLocatorIndex == -1) {
-        const String mainCodeAdd =
-            ' // Setup the locator\n'
+        const String mainCodeAdd = ' // Setup the locator\n'
             'setupLocator();\n\n'
             ' // Setup the routes\n'
             'setupRoutes();\n\n';
@@ -67,24 +71,32 @@ class InitCommand extends Command {
         }
       }
 
-      final int homeIndex = mainFileContents.indexWhere((ln) => ln.contains('home:'));
+      final int homeIndex =
+          mainFileContents.indexWhere((ln) => ln.contains('home:'));
       if (homeIndex != -1) {
-        mainFileContents[homeIndex] = '     // add the initial route (it can also be the `RouteService().homeView`)\n'
+        mainFileContents[homeIndex] =
+            '     // add the initial route (it can also be the `RouteService().homeView`)\n'
             'initialRoute: RouteService.path<HomeView>(),\n'
             '     // this allows the [RouteService] to generate the necessary routes\n'
             'onGenerateRoute: RouteService().onGenerateRoute,';
       } else {
-        final int initialRouteIndex = mainFileContents.indexWhere((ln) => ln.contains('initialRoute:'));
-        final int initialRouteInitIndex = mainFileContents.indexWhere((ln) => ln.contains('initialRoute: RouteService.path'));
+        final int initialRouteIndex =
+            mainFileContents.indexWhere((ln) => ln.contains('initialRoute:'));
+        final int initialRouteInitIndex = mainFileContents
+            .indexWhere((ln) => ln.contains('initialRoute: RouteService.path'));
         if (initialRouteIndex != -1 && initialRouteInitIndex == -1) {
-          mainFileContents[initialRouteIndex] = '     // add the initial route (it can also be the `RouteService().homeView`)\n'
+          mainFileContents[initialRouteIndex] =
+              '     // add the initial route (it can also be the `RouteService().homeView`)\n'
               'initialRoute: RouteService.path<HomeView>(),';
         }
 
-        final int onGenerateRouteIndex = mainFileContents.indexWhere((ln) => ln.contains('onGenerateRoute:'));
-        final int onGenerateRouteInitIndex = mainFileContents.indexWhere((ln) => ln.contains('onGenerateRoute: RouteService().onGenerateRoute'));
+        final int onGenerateRouteIndex = mainFileContents
+            .indexWhere((ln) => ln.contains('onGenerateRoute:'));
+        final int onGenerateRouteInitIndex = mainFileContents.indexWhere((ln) =>
+            ln.contains('onGenerateRoute: RouteService().onGenerateRoute'));
         if (onGenerateRouteIndex != -1 && onGenerateRouteInitIndex == -1) {
-          mainFileContents[onGenerateRouteIndex] = '      // this allows the [RouteService] to generate the necessary routes\n'
+          mainFileContents[onGenerateRouteIndex] =
+              '      // this allows the [RouteService] to generate the necessary routes\n'
               'onGenerateRoute: RouteService().onGenerateRoute,';
         }
       }
@@ -93,8 +105,8 @@ class InitCommand extends Command {
       final String formattedCode = DartFormatter().format(mainFileAsString);
       mainFile.writeAsStringSync(formattedCode, mode: FileMode.writeOnly);
     } else {
-      final Colorize fileAlreadyExists = Colorize('- main.dart file does not exist')
-        ..red();
+      final Colorize fileAlreadyExists =
+          Colorize('- main.dart file does not exist')..red();
       stdout.writeln(fileAlreadyExists);
     }
 
@@ -106,40 +118,36 @@ class InitCommand extends Command {
   void createRoutesFile() {
     const String routesPath = 'lib/app/routes.dart';
 
-    final Colorize creatingRouteString = Colorize('** Creating routes.dart file')
-      ..bold();
+    final Colorize creatingRouteString =
+        Colorize('** Creating routes.dart file')..bold();
     stdout.writeln(creatingRouteString);
 
     final File routesFile = File(routesPath);
     if (routesFile.existsSync()) {
-      final Colorize fileAlreadyExists = Colorize('- routes.dart file already exists')
-        ..red();
+      final Colorize fileAlreadyExists =
+          Colorize('- routes.dart file already exists')..red();
       stdout.writeln(fileAlreadyExists);
     } else {
       final routesFileContentsCode = Library((b) => b
         ..directives.addAll([
-          Directive.import('package:easy_mvvm/easy_mvvm.dart', show: const ['RouteService']),
+          Directive.import('package:easy_mvvm/easy_mvvm.dart',
+              show: const ['RouteService']),
         ])
         ..body.addAll([
           Method.returnsVoid((a) => a
-            ..docs.addAll([
-              '/// Setup all the routes in here'
-            ])
-            ..body = const Code(
-                'final RouteService router = RouteService();\n'
-                    ' // define the homeView if this project as web\n'
-                    ' // router.homeView = const SplashView();\n'
-                    ' // set isAuthenticated so protectedRoutes aren\'t accessible to everyone\n'
-                    ' // router.isAuthenticated = () { return locator<UserService>().isUserSignedIn; };\n'
-                    ' // this is how you define a regular route\n'
-                    ' // router.defineRoute<SplashView>(instance: () => const SplashView(), path: \'splash\', className: \'SplashView\');\n'
-            )
-            ..name = 'setupRoutes'
-          ),
-        ])
-      );
+            ..docs.addAll(['/// Setup all the routes in here'])
+            ..body = const Code('final RouteService router = RouteService();\n'
+                ' // define the homeView if this project as web\n'
+                ' // router.homeView = const SplashView();\n'
+                ' // set isAuthenticated so protectedRoutes aren\'t accessible to everyone\n'
+                ' // router.isAuthenticated = () { return locator<UserService>().isUserSignedIn; };\n'
+                ' // this is how you define a regular route\n'
+                ' // router.defineRoute<SplashView>(instance: () => const SplashView(), path: \'splash\', className: \'SplashView\');\n')
+            ..name = 'setupRoutes'),
+        ]));
       final DartEmitter emitter = DartEmitter.scoped(useNullSafetySyntax: true);
-      final String routesFileContents = DartFormatter().format('${routesFileContentsCode.accept(emitter)}');
+      final String routesFileContents =
+          DartFormatter().format('${routesFileContentsCode.accept(emitter)}');
 
       routesFile.createSync(recursive: true);
       routesFile.writeAsStringSync(routesFileContents);
@@ -153,32 +161,31 @@ class InitCommand extends Command {
   void createLocatorFile() {
     const String locatorPath = 'lib/app/locator.dart';
 
-    final Colorize creatingLocatorString = Colorize('** Creating locator.dart file')
-      ..bold();
+    final Colorize creatingLocatorString =
+        Colorize('** Creating locator.dart file')..bold();
     stdout.writeln(creatingLocatorString);
 
     final File locatorFile = File(locatorPath);
     if (locatorFile.existsSync()) {
-      final Colorize fileAlreadyExists = Colorize('- locator.dart file already exists')
-        ..red();
+      final Colorize fileAlreadyExists =
+          Colorize('- locator.dart file already exists')..red();
       stdout.writeln(fileAlreadyExists);
     } else {
       final locatorFileContentsCode = Library((b) => b
         ..directives.addAll([
-          Directive.import('package:easy_mvvm/easy_mvvm.dart', show: const ['locator']),
+          Directive.import('package:easy_mvvm/easy_mvvm.dart',
+              show: const ['locator']),
         ])
         ..body.addAll([
           Method.returnsVoid((a) => a
-            ..docs.addAll([
-              '/// Register any services here'
-            ])
-            ..body = const Code('// locator.registerLazySingleton<DBService>(() => DBService()); \n')
-            ..name = 'setupLocator'
-          ),
-        ])
-      );
+            ..docs.addAll(['/// Register any services here'])
+            ..body = const Code(
+                '// locator.registerLazySingleton<DBService>(() => DBService()); \n')
+            ..name = 'setupLocator'),
+        ]));
       final DartEmitter emitter = DartEmitter.scoped(useNullSafetySyntax: true);
-      final String locatorFileContents = DartFormatter().format('${locatorFileContentsCode.accept(emitter)}');
+      final String locatorFileContents =
+          DartFormatter().format('${locatorFileContentsCode.accept(emitter)}');
 
       locatorFile.createSync(recursive: true);
       locatorFile.writeAsStringSync(locatorFileContents);

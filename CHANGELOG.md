@@ -1,3 +1,13 @@
+## 0.0.8
+
+* Deprecated `ViewModel`, use `EasyViewModel` instead.
+* Deprecated `View`, use `EasyView` instead.
+* Updated create view command with `EasyView` and `EasyViewModel`
+* Updated create view command with `super.key` instead of the named `Key?` parameter in the constructor
+* Added command to check the version of `easy_mvvm` installed
+* Removed `onWillPop` from `EasyView` in favor of `canPop` and `onPopInvoked`
+* Updated dependencies
+
 ## 0.0.7
 
 * Fixed compatibility with the [url_strategy](https://pub.dev/packages/url_strategy) package

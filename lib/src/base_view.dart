@@ -1,9 +1,9 @@
 import 'package:easy_mvvm/src/locator.dart';
-import 'package:easy_mvvm/src/view_model.dart';
+import 'package:easy_mvvm/src/easy_view_model.dart';
 import 'package:flutter/material.dart';
 
-/// Listens to changes in in [ViewModel].
-class BaseView<T extends ViewModel> extends StatefulWidget {
+/// Listens to changes in in [EasyViewModel].
+class BaseView<T extends EasyViewModel> extends StatefulWidget {
   const BaseView({
     Key? key,
     required this.builder,
@@ -34,8 +34,8 @@ class BaseView<T extends ViewModel> extends StatefulWidget {
   BaseViewState<T> createState() => BaseViewState<T>();
 }
 
-class BaseViewState<T extends ViewModel> extends State<BaseView<T>> {
-  /// Reference to the initialized [ViewModel]. It is lazy loaded.
+class BaseViewState<T extends EasyViewModel> extends State<BaseView<T>> {
+  /// Reference to the initialized [EasyViewModel]. It is lazy loaded.
   late final T _model;
 
   @override

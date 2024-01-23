@@ -1,6 +1,6 @@
 import 'package:get_it/get_it.dart';
 
-/// A simple Service Locator. It is used to register [ViewModel]
+/// A simple Service Locator. It is used to register [EasyViewModel]
 /// and any other services within the app.
 ///
 /// ```dart

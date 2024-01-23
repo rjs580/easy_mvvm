@@ -28,11 +28,11 @@ class SplashViewState extends State<SplashView> {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
+    return const Material(
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.center,
-        children: const [
+        children: [
           Text('Welcome'),
           Text('To'),
           Text('Easy MVVM'),

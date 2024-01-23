@@ -1,18 +1,25 @@
-import 'package:easy_mvvm/easy_mvvm.dart' as mvvm;
+import 'package:easy_mvvm/easy_mvvm.dart';
 import 'package:example/ui/views/counter_view/counter_view_model.dart';
 import 'package:flutter/material.dart';
 
-class CounterView extends mvvm.View<CounterViewModel> {
-  const CounterView({Key? key}) : super(key: key);
+class CounterView extends EasyView<CounterViewModel> {
+  const CounterView({
+    super.key,
+  });
 
   @override
-  mvvm.RouteTransition get routeTransition => mvvm.RouteTransition.scaledSharedAxis;
+  RouteTransition get routeTransition => RouteTransition.scaledSharedAxis;
 
   @override
   Duration get routeTransitionDuration => const Duration(milliseconds: 500);
 
   @override
-  Widget build(BuildContext context, ThemeData theme, CounterViewModel viewModel, Widget? child) {
+  Widget build(
+    BuildContext context,
+    ThemeData theme,
+    CounterViewModel viewModel,
+    Widget? child,
+  ) {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Counter View'),
