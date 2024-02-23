@@ -1,3 +1,8 @@
+## 0.0.9
+
+* Updated dependencies
+* Added `removePopScope` as part of `EasyView` so `PopScope` is removed from the `Widget` tree and enables the ability to add a custom one for more control
+
 ## 0.0.8
 
 * Deprecated `ViewModel`, use `EasyViewModel` instead.

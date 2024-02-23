@@ -69,6 +69,10 @@ abstract class EasyView<T extends EasyViewModel> extends Widget with RouteInfo {
   @protected
   bool get canPop => true;
 
+  /// Remove the [PopScope] from the tree.
+  @protected
+  bool get removePopScope => false;
+
   /// Called when this object is inserted into the tree.
   ///
   /// The framework will call this method exactly once for each [State] object
@@ -114,6 +118,17 @@ class ViewElement<T extends EasyViewModel> extends ComponentElement {
   @override
   Widget build() {
     final ThemeData theme = Theme.of(this);
+
+    if (widget.removePopScope) {
+      return BaseView<T>(
+        viewModelFactory: widget.viewModelFactory,
+        onInit: widget.init,
+        onDispose: widget.dispose,
+        child: widget.child?.call(this, theme),
+        builder: (context, viewModel, child) =>
+            widget.build(context, theme, viewModel, child),
+      );
+    }
 
     return PopScope(
       canPop: widget.canPop,
