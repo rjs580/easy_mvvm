@@ -1,3 +1,7 @@
+## 0.0.12
+
+* Fix `Failed assertion: 'onPopInvokedWithResult == null || onPopInvoked == null'`
+
 ## 0.0.11
 
 * Deprecated `PopInvokedContextCallback` and `onPopInvoked`, use `PopInvokedContextWithResultCallback` and `onPopInvokedWithResult` instead.
