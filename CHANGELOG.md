@@ -1,3 +1,8 @@
+## 0.0.10
+
+* Updated dependencies
+* Reformatted the README to improve readability and structure.
+
 ## 0.0.9
 
 * Updated dependencies

@@ -33,7 +33,7 @@ class CounterView extends EasyView<CounterViewModel> {
             ),
             Text(
               '${viewModel.counter}',
-              style: theme.textTheme.headline4,
+              style: theme.textTheme.bodyLarge,
             ),
           ],
         ),
