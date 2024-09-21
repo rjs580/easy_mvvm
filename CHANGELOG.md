@@ -1,3 +1,7 @@
+## 0.0.11
+
+* Deprecated `PopInvokedContextCallback` and `onPopInvoked`, use `PopInvokedContextWithResultCallback` and `onPopInvokedWithResult` instead.
+
 ## 0.0.10
 
 * Updated dependencies

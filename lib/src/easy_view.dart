@@ -13,8 +13,19 @@ typedef View<T extends EasyViewModel> = EasyView<T>;
 ///
 /// Accepts a didPop boolean indicating whether or not back navigation
 /// succeeded.
+@Deprecated('Use [PopInvokedContextWithResultCallback]')
 typedef PopInvokedContextCallback = void Function(
     BuildContext context, bool didPop);
+
+/// A callback type for informing that a navigation pop has been invoked,
+/// whether or not it was handled successfully.
+///
+/// Parameters:
+/// - [context]: The BuildContext in which the pop was invoked.
+/// - [didPop]: A boolean indicating whether or not back navigation succeeded.
+/// - [result]: The optional result of the pop action.
+typedef PopInvokedContextWithResultCallback<T> = void Function(
+    BuildContext context, bool didPop, T? result);
 
 /// Abstract class that simplifies the use of complicated mvvm
 /// architecture.
@@ -51,7 +62,25 @@ abstract class EasyView<T extends EasyViewModel> extends Widget with RouteInfo {
   /// indicates whether or not the back navigation actually happened
   /// successfully.
   @protected
+  @Deprecated('Use [onPopInvokedWithResult]')
   PopInvokedContextCallback? get onPopInvoked => null;
+
+  /// {@template flutter.widgets.PopScope.onPopInvokedWithResult}
+  ///
+  /// Called after a route pop was handled. It's not possible to prevent the pop
+  /// from happening at the time that this method is called; the pop has already
+  /// happened. Use [canPop] to disable pops in advance.
+  ///
+  /// This will still be called even when the pop is canceled. A pop is canceled
+  /// when the relevant [Route.popDisposition] returns false, such as when
+  /// [canPop] is set to false on a [PopScope]. The `didPop` parameter
+  /// indicates whether or not the back navigation actually happened
+  /// successfully.
+  ///
+  /// {@endtemplate}
+  @protected
+  PopInvokedContextWithResultCallback<dynamic>? get onPopInvokedWithResult =>
+      null;
 
   /// {@template flutter.widgets.PopScope.canPop}
   /// When false, blocks the current route from being popped.
@@ -119,29 +148,26 @@ class ViewElement<T extends EasyViewModel> extends ComponentElement {
   Widget build() {
     final ThemeData theme = Theme.of(this);
 
-    if (widget.removePopScope) {
-      return BaseView<T>(
-        viewModelFactory: widget.viewModelFactory,
-        onInit: widget.init,
-        onDispose: widget.dispose,
-        child: widget.child?.call(this, theme),
-        builder: (context, viewModel, child) =>
-            widget.build(context, theme, viewModel, child),
+    Widget child = BaseView<T>(
+      viewModelFactory: widget.viewModelFactory,
+      onInit: widget.init,
+      onDispose: widget.dispose,
+      child: widget.child?.call(this, theme),
+      builder: (context, viewModel, child) =>
+          widget.build(context, theme, viewModel, child),
+    );
+
+    if (!widget.removePopScope) {
+      child = PopScope<dynamic>(
+        canPop: widget.canPop,
+        onPopInvoked: (didPop) => widget.onPopInvoked?.call(this, didPop),
+        onPopInvokedWithResult: (didPop, result) =>
+            widget.onPopInvokedWithResult?.call(this, didPop, result),
+        child: child,
       );
     }
 
-    return PopScope(
-      canPop: widget.canPop,
-      onPopInvoked: (didPop) => widget.onPopInvoked?.call(this, didPop),
-      child: BaseView<T>(
-        viewModelFactory: widget.viewModelFactory,
-        onInit: widget.init,
-        onDispose: widget.dispose,
-        child: widget.child?.call(this, theme),
-        builder: (context, viewModel, child) =>
-            widget.build(context, theme, viewModel, child),
-      ),
-    );
+    return child;
   }
 
   @override
