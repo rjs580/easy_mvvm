@@ -1,3 +1,8 @@
+## 0.0.13
+
+* Moved `ViewModel.init(context)` from `initState` to `didChangeDependencies` in `BaseView` (internal class) so the context can be used to call `BuildContext.dependOnInheritedWidgetOfExactType`.
+* Updated dependencies
+
 ## 0.0.12
 
 * Fix `Failed assertion: 'onPopInvokedWithResult == null || onPopInvoked == null'`

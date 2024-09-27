@@ -1,6 +1,6 @@
 name: easy_mvvm
 description: An easy mvvm solution that includes ways to manage routes, views, viewmodels, and the mvvm architecture
-version: 0.0.12
+version: 0.0.13
 homepage: https://github.com/rjs580/easy_mvvm
 repository: https://github.com/rjs580/easy_mvvm
 issue_tracker: https://github.com/rjs580/easy_mvvm/issues
@@ -36,6 +36,6 @@ dependencies:
   universal_platform: ^1.1.0
 
 dev_dependencies:
-  flutter_lints: ^4.0.0
+  flutter_lints: ^5.0.0
 
 flutter:

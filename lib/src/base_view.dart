@@ -1,8 +1,10 @@
 import 'package:easy_mvvm/src/locator.dart';
 import 'package:easy_mvvm/src/easy_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:meta/meta.dart';
 
 /// Listens to changes in in [EasyViewModel].
+@internal
 class BaseView<T extends EasyViewModel> extends StatefulWidget {
   const BaseView({
     Key? key,
@@ -38,6 +40,8 @@ class BaseViewState<T extends EasyViewModel> extends State<BaseView<T>> {
   /// Reference to the initialized [EasyViewModel]. It is lazy loaded.
   late final T _model;
 
+  bool _isInitialized = false;
+
   @override
   void initState() {
     if (!locator.isRegistered<T>()) {
@@ -48,8 +52,17 @@ class BaseViewState<T extends EasyViewModel> extends State<BaseView<T>> {
 
     super.initState();
 
-    _model.init(context);
     widget.onInit?.call(_model);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (!_isInitialized && mounted) {
+      _model.init(context);
+      _isInitialized = true;
+    }
   }
 
   @override
@@ -61,8 +74,8 @@ class BaseViewState<T extends EasyViewModel> extends State<BaseView<T>> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _model,
+    return ListenableBuilder(
+      listenable: _model,
       builder: (context, child) => widget.builder(context, _model, child),
       child: widget.child,
     );

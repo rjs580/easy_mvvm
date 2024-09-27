@@ -30,7 +30,9 @@ typedef PopInvokedContextWithResultCallback<T> = void Function(
 /// Abstract class that simplifies the use of complicated mvvm
 /// architecture.
 abstract class EasyView<T extends EasyViewModel> extends Widget with RouteInfo {
-  const EasyView({Key? key}) : super(key: key);
+  const EasyView({
+    Key? key,
+  }) : super(key: key);
 
   /// Called when this view needs to be built.
   @required
@@ -152,7 +154,7 @@ class ViewElement<T extends EasyViewModel> extends ComponentElement {
       viewModelFactory: widget.viewModelFactory,
       onInit: widget.init,
       onDispose: widget.dispose,
-      child: widget.child?.call(this, theme),
+      child: widget.child(this, theme),
       builder: (context, viewModel, child) =>
           widget.build(context, theme, viewModel, child),
     );

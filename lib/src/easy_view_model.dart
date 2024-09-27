@@ -19,8 +19,10 @@ class EasyViewModel extends ChangeNotifier {
 
   /// Set the busy status and notify the associated view
   set busy(bool value) {
-    _busy = value;
-    notifyListeners();
+    if (_busy != value) {
+      _busy = value;
+      notifyListeners();
+    }
   }
 
   /// Called when the model is ready/initialized.
