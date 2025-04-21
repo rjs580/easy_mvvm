@@ -3,11 +3,11 @@ import 'package:flutter/material.dart';
 /// Template used to display errors that occur during routing using the RouteService
 class RouteErrorTemplate extends StatelessWidget {
   const RouteErrorTemplate({
-    Key? key,
+    super.key,
     required this.errorDescription,
     this.actionText,
     this.onAction,
-  }) : super(key: key);
+  });
 
   /// Describes the error for this route
   final String errorDescription;

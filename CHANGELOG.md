@@ -1,3 +1,26 @@
+## 0.1.0
+
+* Raised minimum Dart SDK requirement from 2.16.1 to 2.17.0
+* Enhanced `EasyViewModel` with proper lifecycle management:
+    * Added `context` tracking with safe access patterns
+    * Added `mounted` property to check if view model is still active
+    * Implemented proper disposal mechanism to prevent memory leaks
+    * Updated `init()` method to require a BuildContext and marked with `@mustCallSuper`
+    * Added safety checks to prevent actions after disposal
+* Added granular property-based reactivity system:
+    * Implemented property-specific listeners with `addPropertyListener` and `removePropertyListener`
+    * Added `notifyPropertyChange` and `notifyPropertiesChanged` for targeted UI updates
+    * Added `PropertyBuilder` widget for single property reactive UI
+    * Added `MultiPropertyBuilder` widget for multi-property reactive UI
+* Improved `BaseView` initialization flow:
+    * Added initialization tracking to prevent duplicate init calls
+    * Moved ViewModel initialization to `didChangeDependencies` for safer context access
+* Updated widget constructors to use the `super.key` syntax
+* Fixed code formatting in `CustomPageRouteBuilder`
+* Added lint rule suppressions for deprecated member usage
+* Updated example app to use modern text styles
+* Updated Flutter dependencies in the example app
+
 ## 0.0.9
 
 * Updated dependencies

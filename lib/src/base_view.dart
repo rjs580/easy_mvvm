@@ -5,13 +5,13 @@ import 'package:flutter/material.dart';
 /// Listens to changes in in [EasyViewModel].
 class BaseView<T extends EasyViewModel> extends StatefulWidget {
   const BaseView({
-    Key? key,
+    super.key,
     required this.builder,
     required this.viewModelFactory,
     this.onInit,
     this.onDispose,
     this.child,
-  }) : super(key: key);
+  });
 
   /// Builder to help use applicable values from the model to build its
   /// view (widget).
@@ -38,6 +38,9 @@ class BaseViewState<T extends EasyViewModel> extends State<BaseView<T>> {
   /// Reference to the initialized [EasyViewModel]. It is lazy loaded.
   late final T _model;
 
+  /// Track whether the view model has been initialized to prevent duplicate init calls
+  bool _isInitialized = false;
+
   @override
   void initState() {
     if (!locator.isRegistered<T>()) {
@@ -48,8 +51,18 @@ class BaseViewState<T extends EasyViewModel> extends State<BaseView<T>> {
 
     super.initState();
 
-    _model.init(context);
     widget.onInit?.call(_model);
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (!_isInitialized && mounted) {
+      // Context can be safely used at this point
+      _model.init(context);
+      _isInitialized = true;
+    }
   }
 
   @override

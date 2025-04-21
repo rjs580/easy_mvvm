@@ -11,8 +11,12 @@ export 'src/custom_page_route_builder.dart' hide CustomPageRouteBuilder;
 export 'src/defined_routes.dart' hide DefinedRoutes;
 
 // mvvm
+// ignore: deprecated_member_use_from_same_package
 export 'src/easy_view_model.dart' show EasyViewModel, ViewModel;
+// ignore: deprecated_member_use_from_same_package
 export 'src/easy_view.dart' show EasyView, View;
 export 'src/locator.dart' show locator;
-export 'src/base_view.dart' hide BaseView;
+export 'src/base_view.dart' hide BaseView, BaseViewState;
 export 'src/easy_view.dart' hide ViewElement;
+export 'src/property_builder.dart' show PropertyBuilder;
+export 'src/multi_property_builder.dart' show MultiPropertyBuilder;

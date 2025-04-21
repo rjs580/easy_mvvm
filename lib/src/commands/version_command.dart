@@ -19,6 +19,7 @@ class VersionCommand extends Command {
   @override
   void run() {
     if (easyMvvmVersion?.isNotEmpty == true) {
+      // ignore: avoid_print
       print('easy_mvvm $easyMvvmVersion');
     }
   }

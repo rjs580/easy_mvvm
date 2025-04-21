@@ -31,9 +31,15 @@ class CounterView extends EasyView<CounterViewModel> {
             const Text(
               'You have pushed the button this many times:',
             ),
-            Text(
-              '${viewModel.counter}',
-              style: theme.textTheme.headline4,
+            PropertyBuilder(
+              viewModel: viewModel,
+              propertyName: CounterViewModel.counterProperty,
+              builder: (context) {
+                return Text(
+                  '${viewModel.counter}',
+                  style: theme.textTheme.labelLarge,
+                );
+              },
             ),
           ],
         ),

@@ -19,6 +19,47 @@ dependencies:
 
 Use [url_strategy](https://pub.dev/packages/url_strategy) to remove the '#' in the URL
 
+## Reactive UI Widgets
+
+### PropertyBuilder
+
+The `PropertyBuilder` widget allows you to rebuild only specific parts of your UI when a single property in your ViewModel changes. This optimizes performance by avoiding unnecessary rebuilds of the entire widget tree.
+```dart
+PropertyBuilder<MyViewModel>(
+  viewModel: myViewModel,
+  propertyName: 'counter',
+  builder: (context) {
+    return Text('Counter: ${myViewModel.counter}');
+  },
+)
+```
+
+### MultiPropertyBuilder
+The `MultiPropertyBuilder` widget extends the functionality of `PropertyBuilder` by allowing you to listen to multiple properties at once. This is useful when a UI component depends on several ViewModel properties.
+```dart
+MultiPropertyBuilder<MyViewModel>(
+  viewModel: myViewModel,
+  propertyNames: ['firstName', 'lastName'],
+  builder: (context) {
+    return Text('Name: ${myViewModel.firstName} ${myViewModel.lastName}');
+  },
+)
+```
+Both widgets ensure proper lifecycle management and efficiently update only when needed.
+
+### Property Notification
+When a property changes in your ViewModel, you need to notify the UI to rebuild. The `EasyViewModel` provides two methods for this:
+```dart
+// Notify listeners about a single property change
+myViewModel.notifyPropertyChange('counter');
+
+// Notify listeners about multiple property changes
+myViewModel.notifyPropertiesChanged(['firstName', 'lastName']);
+```
+These methods will trigger rebuilds in any `PropertyBuilder` or `MultiPropertyBuilder` widgets that are listening to the specified properties, ensuring your UI stays in sync with your data model.
+
+## Terminal Commands
+
 ### Command line options and arguments
 
 | Options | Short | Description                                                                   | Usage                                        |

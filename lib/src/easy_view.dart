@@ -19,7 +19,7 @@ typedef PopInvokedContextCallback = void Function(
 /// Abstract class that simplifies the use of complicated mvvm
 /// architecture.
 abstract class EasyView<T extends EasyViewModel> extends Widget with RouteInfo {
-  const EasyView({Key? key}) : super(key: key);
+  const EasyView({super.key});
 
   /// Called when this view needs to be built.
   @required
@@ -80,7 +80,7 @@ abstract class EasyView<T extends EasyViewModel> extends Widget with RouteInfo {
   ///
   /// Override this method to perform initialization that depends on the
   /// location at which this object was inserted into the tree (i.e., [context])
-  /// or on the widget used to configure this object (i.e., [widget]).
+  /// or on the widget used to configure this object.
   ///
   /// Implementations of this method should start with a call to the inherited
   /// method, as in `super.init()`.
@@ -92,7 +92,7 @@ abstract class EasyView<T extends EasyViewModel> extends Widget with RouteInfo {
   ///
   /// The framework calls this method when this [State] object will never
   /// build again. After the framework calls [dispose], the [State] object is
-  /// considered unmounted and the [mounted] property is false.
+  /// considered unmounted and the [State.mounted] property is false.
   ///
   /// Subclasses should override this method to release any resources retained
   /// by this object (e.g., stop any active animations).
@@ -110,7 +110,7 @@ abstract class EasyView<T extends EasyViewModel> extends Widget with RouteInfo {
 /// An element that builds up other elements like widgets or views
 @internal
 class ViewElement<T extends EasyViewModel> extends ComponentElement {
-  ViewElement(EasyView widget) : super(widget);
+  ViewElement(EasyView super.widget);
 
   @override
   EasyView<T> get widget => super.widget as EasyView<T>;
@@ -124,6 +124,7 @@ class ViewElement<T extends EasyViewModel> extends ComponentElement {
         viewModelFactory: widget.viewModelFactory,
         onInit: widget.init,
         onDispose: widget.dispose,
+        // ignore: invalid_null_aware_operator
         child: widget.child?.call(this, theme),
         builder: (context, viewModel, child) =>
             widget.build(context, theme, viewModel, child),
@@ -132,11 +133,13 @@ class ViewElement<T extends EasyViewModel> extends ComponentElement {
 
     return PopScope(
       canPop: widget.canPop,
+      // ignore: deprecated_member_use
       onPopInvoked: (didPop) => widget.onPopInvoked?.call(this, didPop),
       child: BaseView<T>(
         viewModelFactory: widget.viewModelFactory,
         onInit: widget.init,
         onDispose: widget.dispose,
+        // ignore: invalid_null_aware_operator
         child: widget.child?.call(this, theme),
         builder: (context, viewModel, child) =>
             widget.build(context, theme, viewModel, child),
