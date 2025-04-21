@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 
 // Custom widget can be created with the route info for navigation
 class SplashView extends StatefulWidget with RouteInfo {
-  const SplashView({Key? key}) : super(key: key);
+  const SplashView({super.key});
 
   @override
   RouteTransition get routeTransition => RouteTransition.fadeScale;

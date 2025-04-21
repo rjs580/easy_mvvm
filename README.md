@@ -49,6 +49,52 @@ Example:
 RouteService.navigateTo(context, RouteInfo.home);
 ```
 
+## Reactive UI Widgets
+
+The package provides specialized widgets that enable efficient UI updates when working with the MVVM pattern. These widgets help optimize performance by rebuilding only when necessary.
+
+### PropertyBuilder
+
+The `PropertyBuilder` widget allows you to rebuild only specific parts of your UI when a single property in your ViewModel changes. This optimizes performance by avoiding unnecessary rebuilds of the entire widget tree.
+
+```dart
+PropertyBuilder<MyViewModel>(
+  viewModel: myViewModel,
+  propertyName: 'counter',
+  builder: (context) {
+    return Text('Counter: ${myViewModel.counter}');
+  },
+)
+```
+
+### MultiPropertyBuilder
+
+The `MultiPropertyBuilder` widget extends the functionality of `PropertyBuilder` by allowing you to listen to multiple properties at once. This is useful when a UI component depends on several ViewModel properties.
+
+```dart
+MultiPropertyBuilder<MyViewModel>(
+  viewModel: myViewModel,
+  propertyNames: ['firstName', 'lastName'],
+  builder: (context) {
+    return Text('Name: ${myViewModel.firstName} ${myViewModel.lastName}');
+  },
+)
+```
+Both widgets ensure proper lifecycle management and efficiently update only when needed.
+
+### Property Notification
+
+When a property changes in your ViewModel, you need to notify the UI to rebuild. The `EasyViewModel` provides two methods for this:
+
+```dart
+// Notify listeners about a single property change
+myViewModel.notifyPropertyChange('counter');
+
+// Notify listeners about multiple property changes
+myViewModel.notifyPropertiesChanged(['firstName', 'lastName']);
+```
+These methods will trigger rebuilds in any `PropertyBuilder` or `MultiPropertyBuilder` widgets that are listening to the specified properties, ensuring your UI stays in sync with your data model.
+
 ## Getting Started
 
 ### Installation
@@ -74,6 +120,75 @@ For Flutter web applications, it's recommended to use the [url_strategy](https:/
 To use easy_mvvm in your Flutter project, import it as follows:
 ```dart
 import 'package:easy_mvvm/easy_mvvm.dart';
+```
+
+### Reactive UI
+Here's a complete example demonstrating how to use these reactive UI widgets:
+```dart
+class ProfileViewModel extends EasyViewModel {
+  static const String firstNameProperty = 'firstName';
+  static const String lastNameProperty = 'lastName';
+  static const String ageProperty = 'age';
+  
+  String _firstName = 'John';
+  String _lastName = 'Doe';
+  int _age = 30;
+  
+  String get firstName => _firstName;
+  String get lastName => _lastName;
+  int get age => _age;
+  
+  void updateFirstName(String value) {
+    _firstName = value;
+    notifyPropertyChange(firstNameProperty);
+  }
+  
+  void updateLastName(String value) {
+    _lastName = value;
+    notifyPropertyChange(lastNameProperty);
+  }
+  
+  void updateAge(int value) {
+    _age = value;
+    notifyPropertyChange(ageProperty);
+  }
+  
+  void updateFullProfile(String firstName, String lastName, int age) {
+    _firstName = firstName;
+    _lastName = lastName;
+    _age = age;
+    notifyPropertiesChanged([firstNameProperty, lastNameProperty, ageProperty]);
+  }
+}
+
+// In your widget tree:
+Column(
+  children: [
+    PropertyBuilder<ProfileViewModel>(
+      viewModel: profileViewModel,
+      propertyName: ProfileViewModel.firstNameProperty,
+      builder: (context) {
+        return Text('First Name: ${profileViewModel.firstName}');
+      },
+    ),
+    
+    PropertyBuilder<ProfileViewModel>(
+      viewModel: profileViewModel,
+      propertyName: ProfileViewModel.ageProperty,
+      builder: (context) {
+        return Text('Age: ${profileViewModel.age}');
+      },
+    ),
+    
+    MultiPropertyBuilder<ProfileViewModel>(
+      viewModel: profileViewModel,
+      propertyNames: [ProfileViewModel.firstNameProperty, ProfileViewModel.lastNameProperty],
+      builder: (context) {
+        return Text('Full Name: ${profileViewModel.firstName} ${profileViewModel.lastName}');
+      },
+    ),
+  ],
+)
 ```
 
 ## Command-Line Interface

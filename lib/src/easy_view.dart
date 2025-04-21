@@ -161,8 +161,9 @@ class ViewElement<T extends EasyViewModel> extends ComponentElement {
     if (!widget.removePopScope) {
       child = PopScope<dynamic>(
         canPop: widget.canPop,
-        // ignore: deprecated_member_use
+        // ignore: deprecated_member_use_from_same_package, deprecated_member_use
         onPopInvoked: widget.onPopInvoked != null
+            // ignore: deprecated_member_use_from_same_package
             ? (didPop) => widget.onPopInvoked?.call(this, didPop)
             : null,
         onPopInvokedWithResult: widget.onPopInvokedWithResult != null

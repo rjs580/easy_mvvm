@@ -12,13 +12,6 @@
     * Added `notifyPropertyChange` and `notifyPropertiesChanged` for targeted UI updates
     * Added `PropertyBuilder` widget for single property reactive UI
     * Added `MultiPropertyBuilder` widget for multi-property reactive UI
-* Improved `BaseView` initialization flow:
-    * Added initialization tracking to prevent duplicate init calls
-    * Moved ViewModel initialization to `didChangeDependencies` for safer context access
-* Updated widget constructors to use the `super.key` syntax
-* Fixed code formatting in `CustomPageRouteBuilder`
-* Added lint rule suppressions for deprecated member usage
-* Updated example app to use modern text styles
 * Updated Flutter dependencies in the example app
 
 ## 0.0.13
