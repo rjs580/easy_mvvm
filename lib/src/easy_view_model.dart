@@ -34,8 +34,10 @@ class EasyViewModel extends ChangeNotifier {
   set busy(bool value) {
     if (_disposed) return;
 
-    _busy = value;
-    notifyListeners();
+    if (_busy != value) {
+      _busy = value;
+      notifyListeners();
+    }
   }
 
   /// Called when the model is ready/initialized.

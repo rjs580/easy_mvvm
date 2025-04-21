@@ -13,8 +13,19 @@ typedef View<T extends EasyViewModel> = EasyView<T>;
 ///
 /// Accepts a didPop boolean indicating whether or not back navigation
 /// succeeded.
+@Deprecated('Use [PopInvokedContextWithResultCallback]')
 typedef PopInvokedContextCallback = void Function(
     BuildContext context, bool didPop);
+
+/// A callback type for informing that a navigation pop has been invoked,
+/// whether or not it was handled successfully.
+///
+/// Parameters:
+/// - [context]: The BuildContext in which the pop was invoked.
+/// - [didPop]: A boolean indicating whether or not back navigation succeeded.
+/// - [result]: The optional result of the pop action.
+typedef PopInvokedContextWithResultCallback<T> = void Function(
+    BuildContext context, bool didPop, T? result);
 
 /// Abstract class that simplifies the use of complicated mvvm
 /// architecture.
@@ -51,7 +62,25 @@ abstract class EasyView<T extends EasyViewModel> extends Widget with RouteInfo {
   /// indicates whether or not the back navigation actually happened
   /// successfully.
   @protected
+  @Deprecated('Use [onPopInvokedWithResult]')
   PopInvokedContextCallback? get onPopInvoked => null;
+
+  /// {@template flutter.widgets.PopScope.onPopInvokedWithResult}
+  ///
+  /// Called after a route pop was handled. It's not possible to prevent the pop
+  /// from happening at the time that this method is called; the pop has already
+  /// happened. Use [canPop] to disable pops in advance.
+  ///
+  /// This will still be called even when the pop is canceled. A pop is canceled
+  /// when the relevant [Route.popDisposition] returns false, such as when
+  /// [canPop] is set to false on a [PopScope]. The `didPop` parameter
+  /// indicates whether or not the back navigation actually happened
+  /// successfully.
+  ///
+  /// {@endtemplate}
+  @protected
+  PopInvokedContextWithResultCallback<dynamic>? get onPopInvokedWithResult =>
+      null;
 
   /// {@template flutter.widgets.PopScope.canPop}
   /// When false, blocks the current route from being popped.
@@ -80,7 +109,7 @@ abstract class EasyView<T extends EasyViewModel> extends Widget with RouteInfo {
   ///
   /// Override this method to perform initialization that depends on the
   /// location at which this object was inserted into the tree (i.e., [context])
-  /// or on the widget used to configure this object.
+  /// or on the widget used to configure this object (i.e., [widget]).
   ///
   /// Implementations of this method should start with a call to the inherited
   /// method, as in `super.init()`.
@@ -92,7 +121,7 @@ abstract class EasyView<T extends EasyViewModel> extends Widget with RouteInfo {
   ///
   /// The framework calls this method when this [State] object will never
   /// build again. After the framework calls [dispose], the [State] object is
-  /// considered unmounted and the [State.mounted] property is false.
+  /// considered unmounted and the [mounted] property is false.
   ///
   /// Subclasses should override this method to release any resources retained
   /// by this object (e.g., stop any active animations).
@@ -119,32 +148,32 @@ class ViewElement<T extends EasyViewModel> extends ComponentElement {
   Widget build() {
     final ThemeData theme = Theme.of(this);
 
-    if (widget.removePopScope) {
-      return BaseView<T>(
-        viewModelFactory: widget.viewModelFactory,
-        onInit: widget.init,
-        onDispose: widget.dispose,
-        // ignore: invalid_null_aware_operator
-        child: widget.child?.call(this, theme),
-        builder: (context, viewModel, child) =>
-            widget.build(context, theme, viewModel, child),
+    Widget child = BaseView<T>(
+      viewModelFactory: widget.viewModelFactory,
+      onInit: widget.init,
+      onDispose: widget.dispose,
+      // ignore: invalid_null_aware_operator
+      child: widget?.child(this, theme),
+      builder: (context, viewModel, child) =>
+          widget.build(context, theme, viewModel, child),
+    );
+
+    if (!widget.removePopScope) {
+      child = PopScope<dynamic>(
+        canPop: widget.canPop,
+        // ignore: deprecated_member_use
+        onPopInvoked: widget.onPopInvoked != null
+            ? (didPop) => widget.onPopInvoked?.call(this, didPop)
+            : null,
+        onPopInvokedWithResult: widget.onPopInvokedWithResult != null
+            ? (didPop, result) =>
+                widget.onPopInvokedWithResult?.call(this, didPop, result)
+            : null,
+        child: child,
       );
     }
 
-    return PopScope(
-      canPop: widget.canPop,
-      // ignore: deprecated_member_use
-      onPopInvoked: (didPop) => widget.onPopInvoked?.call(this, didPop),
-      child: BaseView<T>(
-        viewModelFactory: widget.viewModelFactory,
-        onInit: widget.init,
-        onDispose: widget.dispose,
-        // ignore: invalid_null_aware_operator
-        child: widget.child?.call(this, theme),
-        builder: (context, viewModel, child) =>
-            widget.build(context, theme, viewModel, child),
-      ),
-    );
+    return child;
   }
 
   @override

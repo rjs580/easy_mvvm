@@ -1,8 +1,10 @@
 import 'package:easy_mvvm/src/locator.dart';
 import 'package:easy_mvvm/src/easy_view_model.dart';
 import 'package:flutter/material.dart';
+import 'package:meta/meta.dart';
 
 /// Listens to changes in in [EasyViewModel].
+@internal
 class BaseView<T extends EasyViewModel> extends StatefulWidget {
   const BaseView({
     super.key,
@@ -74,8 +76,8 @@ class BaseViewState<T extends EasyViewModel> extends State<BaseView<T>> {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedBuilder(
-      animation: _model,
+    return ListenableBuilder(
+      listenable: _model,
       builder: (context, child) => widget.builder(context, _model, child),
       child: widget.child,
     );

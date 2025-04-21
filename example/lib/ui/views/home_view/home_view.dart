@@ -15,7 +15,8 @@ class HomeView extends EasyView<HomeViewModel> {
   bool get canPop => false;
 
   @override
-  PopInvokedContextCallback? get onPopInvoked => (context, didPop) {
+  PopInvokedContextWithResultCallback? get onPopInvokedWithResult =>
+      (context, didPop, result) {
         showDialog<void>(
           context: context,
           builder: (BuildContext context) {

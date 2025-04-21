@@ -21,6 +21,24 @@
 * Updated example app to use modern text styles
 * Updated Flutter dependencies in the example app
 
+## 0.0.13
+
+* Moved `ViewModel.init(context)` from `initState` to `didChangeDependencies` in `BaseView` (internal class) so the context can be used to call `BuildContext.dependOnInheritedWidgetOfExactType`.
+* Updated dependencies
+
+## 0.0.12
+
+* Fix `Failed assertion: 'onPopInvokedWithResult == null || onPopInvoked == null'`
+
+## 0.0.11
+
+* Deprecated `PopInvokedContextCallback` and `onPopInvoked`, use `PopInvokedContextWithResultCallback` and `onPopInvokedWithResult` instead.
+
+## 0.0.10
+
+* Updated dependencies
+* Reformatted the README to improve readability and structure.
+
 ## 0.0.9
 
 * Updated dependencies
